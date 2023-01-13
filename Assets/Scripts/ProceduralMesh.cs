@@ -4,13 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
-public class MeshGenerator : MonoBehaviour
+public class ProceduralMesh : MonoBehaviour
 {
-    [SerializeField] 
-    private Vector3[] vertices;
-    [SerializeField] 
-    private int[] triangles;
-
+    
     private Mesh _mesh;
     private MeshFilter _meshFilter;
 
@@ -27,8 +23,9 @@ public class MeshGenerator : MonoBehaviour
     private void DrawMesh()
     {
         _mesh.Clear();
-        _mesh.vertices = vertices;
-        _mesh.triangles = triangles;
+        var adapter = GetComponent<IProceduralMeshAdapter>();
+        _mesh.vertices = adapter.GetVertices();
+        _mesh.triangles = adapter.GetTriangles();
 
         _mesh.RecalculateNormals();
     }
