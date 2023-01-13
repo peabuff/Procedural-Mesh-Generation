@@ -572,7 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPoint: {x: 0, y: 8, z: 0}
   radius: 2
-  segmentCount: 120
+  segmentCount: 32
 --- !u!114 &1963018944
 MonoBehaviour:
   m_ObjectHideFlags: 0

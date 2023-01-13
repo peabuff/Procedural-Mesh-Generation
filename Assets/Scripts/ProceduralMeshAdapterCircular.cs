@@ -7,7 +7,8 @@ public class ProceduralCircularMeshGenerator : MonoBehaviour, IProceduralMeshAda
 {
     [SerializeField] private Vector3 centerPoint = Vector3.zero;
     [SerializeField] private float radius = 2;
-    [SerializeField] private int segmentCount = 3;
+    [Range(8,1000)]
+    [SerializeField] private int segmentCount = 8;
 
     private float _angleStep;
     private List<Vector3> _vertices;
@@ -23,32 +24,28 @@ public class ProceduralCircularMeshGenerator : MonoBehaviour, IProceduralMeshAda
 
     private void SetVerticesAndTriangles()
     {
-        _vertices.Add(centerPoint);
+        _vertices.Add(centerPoint); //the very first vertex is our center point
         Vector3 nextVertex;
-        float currentAngle = 0f;
-
+        float currentAngle;
+        int triangleCount = 0;
         
-        for (int stepIndex = 0; stepIndex < segmentCount; stepIndex++)
+        for (int stepIndex = 0; stepIndex <= segmentCount+1; stepIndex++)
         {
             currentAngle = _angleStep * stepIndex * Mathf.Deg2Rad;
             nextVertex = new Vector3(centerPoint.x + Mathf.Cos(currentAngle) * radius,centerPoint.y + Mathf.Sin(currentAngle) * radius,0);
             _vertices.Add(nextVertex);
+            
             Debug.Log(nextVertex);
-
-            var index = stepIndex - 1;
-            if (index >= 0)
+            
+            if (stepIndex >= 2)
             {
                 _triangles.Add(0);
-                _triangles.Add(index+2);
-                _triangles.Add(index+1);
+                _triangles.Add(triangleCount+2);
+                _triangles.Add(triangleCount+1);
+                triangleCount++;
+                Debug.Log("Triangle Count = " + triangleCount);
             }
-
         }
-        _triangles.Add(0);
-        _triangles.Add(1);
-        _triangles.Add(segmentCount);
-
-
     }
 
     public Vector3[] GetVertices()
